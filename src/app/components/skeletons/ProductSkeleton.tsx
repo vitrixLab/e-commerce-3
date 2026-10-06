@@ -2,7 +2,7 @@
 
 export function ProductSkeletonCard() {
   return (
-    <div className="flex-shrink-0 w-72 rounded-lg overflow-hidden border border-gray-100 shadow-sm animate-pulse bg-white">
+    <div className="w-full max-w-[320px] mx-auto rounded-lg overflow-hidden border border-gray-100 shadow-sm animate-pulse bg-white">
       {/* Image Skeleton */}
       <div className="aspect-[4/5] bg-gray-200 w-full" />
 
@@ -22,21 +22,15 @@ export function ProductSkeletonCard() {
   );
 }
 
-export function ProductSkeletonRow({ count = 4 }: { count?: number }) {
+export function ProductSkeletonGrid({
+  count = 6,
+  gridClass = "grid grid-cols-1 sm:grid-cols-2 place-items-center lg:grid-cols-2 xl:grid-cols-3 gap-6",
+}: {
+  count?: number;
+  gridClass?: string;
+}) {
   return (
-    <div className="pt-6 w-full">
-      <div className="flex gap-4 overflow-x-auto custom-scrollbar">
-        {Array.from({ length: count }).map((_, idx) => (
-          <ProductSkeletonCard key={idx} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-export function ProductSkeletonGrid({ count = 6 }: { count?: number }) {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 place-items-center lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className={gridClass}>
       {Array.from({ length: count }).map((_, idx) => (
         <ProductSkeletonCard key={idx} />
       ))}

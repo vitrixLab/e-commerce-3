@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ProductOrg } from "./productcard/productType";
 import ProductCard from "./productcard/ProductCard";
-import { ProductSkeletonRow } from "./skeletons/ProductSkeleton";
+import { ProductSkeletonGrid } from "./skeletons/ProductSkeleton";
 import { useGetTopSellProductsQuery } from "@/redux/modules/products/products.api";
 
 const categories = ["All", "Women", "Men"];
@@ -24,7 +24,7 @@ function ProductShowcase() {
 
   return (
     <div className="h-full w-full text-black md:pt-[10vh]">
-      <div className="w-full xl:max-w-[90vw] ml-auto px-4 xl:px-0 md:py-8">
+      <div className="max-w-7xl mx-auto px-4 md:py-8">
         {/* Header */}
         <div className="mb-8">
           <p className="text-gray-600 mb-2">Our Products</p>
@@ -78,7 +78,13 @@ function ProductGrid({
   activeCategory,
   onRetry,
 }: GridProps) {
-  if (loading) return <ProductSkeletonRow count={4} />;
+  if (loading)
+    return (
+      <ProductSkeletonGrid
+        count={8}
+        gridClass="pt-6 w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center"
+      />
+    );
 
   if (error) {
     return (
@@ -126,12 +132,10 @@ function ProductGrid({
     );
 
   return (
-    <div className="pt-6 w-full">
-      <div className="flex gap-4 overflow-x-auto custom-scrollbar">
-        {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
-      </div>
+    <div className="pt-6 w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 place-items-center">
+      {filteredProducts.map((product) => (
+        <ProductCard key={product.id} product={product} />
+      ))}
     </div>
   );
 }

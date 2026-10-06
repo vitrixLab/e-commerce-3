@@ -2,7 +2,7 @@ import React from "react";
 
 export const ProductSkeleton = () => {
     return (
-        <div className="flex-shrink-0 w-72 animate-pulse overflow-hidden shadow-sm bg-white">
+        <div className="w-full max-w-[320px] mx-auto animate-pulse overflow-hidden shadow-sm bg-white">
             {/* Product Image Skeleton */}
             <div className="relative aspect-[4/5] bg-gray-200"></div>
 

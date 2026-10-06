@@ -33,7 +33,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div
       key={product.id}
       onClick={handleCardClick}
-      className="flex-shrink-0 w-72 group relative overflow-hidden cursor-pointer shadow-sm hover:shadow-lg transition-shadow"
+      className="w-full max-w-[320px] mx-auto group relative overflow-hidden cursor-pointer shadow-sm hover:shadow-lg transition-shadow"
     >
       {/* Product Image */}
       <div className="relative aspect-[4/5] overflow-hidden bg-[#F6F6F6]">
