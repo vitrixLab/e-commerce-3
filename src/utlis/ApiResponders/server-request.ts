@@ -1,24 +1,26 @@
-import axios from "axios";
+import axios, { type AxiosRequestConfig } from "axios";
 
-const APP_BASE_URL: string = process.env.NEXT_PUBLIC_APP_BASE_URL || "";
+type ServerRequestConfig = AxiosRequestConfig & {
+  authorization?: boolean;
+  config?: Record<string, unknown>;
+};
 
-const serverRequest = async (configuration: any) => {
+const serverRequest = async (configuration: ServerRequestConfig) => {
   const { authorization, config, ...restConfiguration } = configuration;
 
-  const defaultHeader: any = {
+  const defaultHeader: Record<string, string> = {
     "Content-Type": "application/json",
     Accept: "application/json",
-    "Api-Key": process.env.NEXT_PUBLIC_API_KEY,
   };
 
   return await axios({
     ...restConfiguration,
-    url: `${APP_BASE_URL}/${restConfiguration?.url.toString()}`,
     headers: defaultHeader,
   })
     .then(async (resp) => {
-      if (!!resp?.data?.errors) {
-        throw new Error(resp?.data?.errors[0]?.message);
+      if ((resp?.data as { errors?: unknown[] })?.errors) {
+        const errors = (resp.data as { errors: { message?: string }[] }).errors;
+        throw new Error(errors[0]?.message);
       }
       return resp?.data?.data;
     })

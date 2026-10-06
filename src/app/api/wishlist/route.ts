@@ -5,6 +5,7 @@ import { NextRequest } from "next/server";
 export async function GET(req: NextRequest) {
   try {
     const user = await verifyUser(req);
+    if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
     const res = await prisma.wishlistItem.findMany({
       where: {

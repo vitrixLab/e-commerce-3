@@ -1,20 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
+import { mockPrisma } from "./mock/mockPrisma";
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-function createPrismaClient() {
-  // In test environment, ensure we're using test database
-  if (process.env.NODE_ENV === "test") {
-    const { config } = require("dotenv");
-    const { join } = require("path");
-
-    // Reload env vars for test
-    config({ path: join(process.cwd(), ".env.test") });
-  }
-
-  return new PrismaClient();
-}
-
-export const prisma = globalForPrisma.prisma || createPrismaClient();
+// MVP build: no database. Every query is served by the in-memory fixture store.
+export const prisma = (globalForPrisma.prisma ??
+  (mockPrisma as unknown as PrismaClient)) as PrismaClient;
 
 if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

@@ -19,6 +19,7 @@ export async function POST(req:NextRequest, context: { params: Promise<{ product
     const videos = formData.getAll("video") as File[];
 
     const user = await verifyUser(req)
+    if (!user) return ApiError(401, "Unauthorized");
     const customerId=user.id
 
     if (rating === (0 || undefined) || comment?.trim() === "" || title?.trim() === "") {
@@ -75,6 +76,7 @@ export async function DELETE(req:NextRequest, context: { params: Promise<{ produ
   try {
     const {reviewId} = await req.json();
     const user = await verifyUser(req)
+    if (!user) return ApiError(401, "Unauthorized");
     const customerId=user.id
 
     
@@ -150,6 +152,7 @@ export async function PATCH(req:NextRequest, context: { params: Promise<{ produc
     const { rating, comment,title } = body;
 
     const user = await verifyUser(req)
+    if (!user) return ApiError(401, "Unauthorized");
     const customerId=user.id
 
 if (rating === undefined || comment.trim() === "" || title.trim() === "") {

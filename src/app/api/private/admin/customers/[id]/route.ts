@@ -2,11 +2,6 @@ import { NextRequest } from "next/server";
 import { prisma } from "@/app/lib/prisma";
 import { isUserAdmin } from "@/app/server/controllers/admin.controllers";
 import { ApiResponds } from "@/utlis/ApiResponders/ApiResponds";
-import { createClient } from "@supabase/supabase-js";
-
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-const supabaseAdmin = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
 export async function DELETE(
   req: NextRequest,
@@ -23,22 +18,6 @@ export async function DELETE(
     if (!customer) return ApiResponds(404, "Customer not found");
 
     await prisma.customer.delete({ where: { id } });
-
-    // Optional: Supabase deletion
-    try {
-      const { error } = await supabaseAdmin.auth.admin.deleteUser(id);
-      if (error) {
-        console.warn(
-          `Supabase deletion skipped for ID "${id}" – probably not a valid UUID`,
-          error.message
-        );
-      }
-    } catch (supabaseErr) {
-      console.warn(
-        `Supabase deletion failed for ID "${id}" (ignored):`,
-        (supabaseErr as Error).message
-      );
-    }
 
     return ApiResponds(200, "Customer deleted successfully");
   } catch (err) {

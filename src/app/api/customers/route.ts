@@ -6,6 +6,8 @@ import { ApiError } from "@/utlis/ApiResponders/ApiError";
 export async function GET(req: NextRequest) {
   try {
     const user = await verifyUser(req);
+    if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
+
     const customerProfile = await prisma.customer.findUnique({
       where: { id: user.id },
       select: {
@@ -36,5 +38,6 @@ export async function GET(req: NextRequest) {
     } else {
       //console.error("API /customers failed with non-Error:", error);
     }
+    return Response.json({ error: "Failed to load customer profile" }, { status: 500 });
   }
 }

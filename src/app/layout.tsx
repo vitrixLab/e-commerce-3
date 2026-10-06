@@ -3,10 +3,7 @@ import "./globals.css";
 
 import { Geist_Mono } from "next/font/google";
 import { AuthProvider } from "./auth-context";
-import GoogleOneTap from "./components/GoogleOneTap";
 import { ReduxProvider } from "./ReduxProvider";
-
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 const siteUrl = "https://clothing-store-pearl-psi.vercel.app";
 
@@ -54,13 +51,11 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={` ${geistMono.variable}  antialiased`}>
-        <GoogleOneTap />{" "}
+      <body className={` ${geistMono.variable} antialiased`}>
         <AuthProvider>
           <ReduxProvider>{children}</ReduxProvider>
         </AuthProvider>
         {modal}
-        <GoogleAnalytics gaId="G-D3P2EM15QV" />
       </body>
     </html>
   );

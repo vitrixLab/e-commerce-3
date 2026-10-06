@@ -25,7 +25,7 @@ interface ProductLayoutProps {
   imagegallery: ReactNode;
   productdetails: ReactNode;
   descriptionandreview: ReactNode;
-  params: { productId: string };
+  params: Promise<{ productId: string }>;
 }
 
 export default function ProductLayout({
