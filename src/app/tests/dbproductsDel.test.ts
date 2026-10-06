@@ -5,6 +5,31 @@ import { NextRequest } from "next/server";
 
 describe("Product API - DELETE existing products by ID", () => {
   const productIds = ["cmhdof2yk0001sipsgqf07f98"];
+  let categoryId: number;
+
+  beforeAll(async () => {
+    const category = await prisma.category.create({
+      data: { name: "male", description: "Category for delete tests" },
+    });
+    categoryId = category.id;
+
+    await prisma.product.upsert({
+      where: { id: productIds[0] },
+      update: {},
+      create: {
+        id: productIds[0],
+        name: "Product To Delete",
+        description: "Fixture created for the delete test",
+        sellingPrice: 100,
+        costPrice: 50,
+        stockQty: 10,
+        categoryId,
+        brand: "TestBrand",
+        material: "Cotton",
+        originCountry: "USA",
+      },
+    });
+  });
 
   it("should delete the specified products", async () => {
     const request = new NextRequest(
